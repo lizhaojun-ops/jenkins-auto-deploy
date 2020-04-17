@@ -14,16 +14,14 @@ elif [ $ENV = pre ]; then
    ip_list='预发布a服务器IP,如果多个IP可用英文格式,隔开'
 elif [ $ENV = pro ]; then
    ip_list='生产服务器IP,如果多个IP可用英文格式,隔开'
-elif [ $ENV = yace ]; then
-   ip_list='压测服务器IP,如果多个IP可用英文格式,隔开'
 fi
  
 US=' '          #默认为root
 FROM_DIR=' '    #这里是打完的jar或者是war包的路径,可用正则匹配,务必为绝对路径
-TO_HOME=' '     #服务所在的目录,例如长城环境的是: /home/changcheng/app/tomcat 这个目录是可以修改的,如 /home/changcheng/app/tomcat/newfuel , 其他项目环境自行修改
+TO_HOME=' '     #服务所在
 SERVER_NAME=' ' #服务名,必须要和服务器上的目录保持一致,否则发版会失败
 WAR_NAME=' '    # jar,war包名,正则匹配就可以
 
 # 1.上传到跳板机 2.远程登录跳板机实行ssh命令,fb.sh可以根据不通项目重命名
-sh  /mapbar/app/jenkins/scripts/XXXXXXfb.sh -i ${ip_list} -u ${US} -f ${FROM_DIR} -t ${TO_HOME} -n ${SERVER_NAME} -w ${WAR_NAME}
+sh  /srv/app/jenkins/scripts/jenkins-java-deploy.sh -i ${ip_list} -u ${US} -f ${FROM_DIR} -t ${TO_HOME} -n ${SERVER_NAME} -w ${WAR_NAME}
 

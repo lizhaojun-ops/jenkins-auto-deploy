@@ -1,5 +1,4 @@
 #!/bin/sh
-#edit by lizj2
 #最后更新: 修复了一些打包的问题
 
 PART_LIST=$*
@@ -53,16 +52,16 @@ SCP()
 {
 #远程scp包
 echo '[INFO] -------------------------------------------------------------------------------------------------------'
-echo '[INFO] 正在将打包后的jar、war包远程scp到10.100.5.25的跳板机'
+echo '[INFO] 正在将打包后的jar、war包远程scp到192.168.1.2的跳板机'
 echo '[INFO] -------------------------------------------------------------------------------------------------------'
 echo "[INFO] 正在检查相关目录是否存在..."
 sshpass -p ${JUMP_PASSWD} ssh -p ${JUMP_SSHPORT} ${JUMP_USER}@${JUMP_HOST} -o StrictHostKeyChecking=no "if [ ! -d $JUMP_DIR/$SERVER_LIST/appdir ]; then echo '[INFO] 未检测到远程目录,正在自动创建所需目录'; mkdir -p $JUMP_DIR/$SERVER_LIST/{appdir,backup}; else echo '[INFO] 目录已存在,无需重复创建! '; fi "
 echo "[INFO] 正在将旧版本包备份到$JUMP_DIR/${SERVER_LIST}/backup"
 sshpass -p ${JUMP_PASSWD} ssh -p ${JUMP_SSHPORT} ${JUMP_USER}@${JUMP_HOST} -o StrictHostKeyChecking=no "cd ${JUMP_DIR}/${SERVER_LIST}/appdir ;  mv ${WAR_NAME} ../backup/${WAR_NAME}_$(date +%Y-%m-%d-%H:%M) ; rm -rf ${WAR_NAME}"
-echo "[INFO] 正在将包scp到10.100.5.25的${JUMP_DIR}/${SERVER_LIST}/appdir "
+echo "[INFO] 正在将包scp到192.168.1.2的${JUMP_DIR}/${SERVER_LIST}/appdir "
 sshpass -p ${JUMP_PASSWD} scp -r -o StrictHostKeyChecking=no -P${JUMP_SSHPORT} ${FROM_DIR} ${JUMP_USER}@${JUMP_HOST}:${JUMP_DIR}/${SERVER_LIST}/appdir/
 sshpass -p ${JUMP_PASSWD} ssh -p ${JUMP_SSHPORT} ${JUMP_USER}@${JUMP_HOST} -o StrictHostKeyChecking=no "chmod -Rf 755 $JUMP_DIR"
-echo '[INFO] 已将jar、war包scp到10.100.5.25跳板机'
+echo '[INFO] 已将jar、war包scp到192.168.1.2跳板机'
 echo '[INFO] -------------------------------------------------------------------------------------------------------'
 }
 
